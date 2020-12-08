@@ -19,4 +19,8 @@ export class AppService {
 
     return this.chambreModel.find().skip(skip).limit(pageSize);
   }
+
+  getDetail(id): Promise<Chambre> {
+    return this.chambreModel.findById(id).exec();
+  }
 }

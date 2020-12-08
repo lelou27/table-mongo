@@ -1,4 +1,4 @@
-import { Get, Controller, Render, Query } from '@nestjs/common';
+import { Get, Controller, Render, Query, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -12,6 +12,13 @@ export class AppController {
       page = 1;
     }
 
-    return await this.appService.getChambres(page);
+    const chambres = await this.appService.getChambres(page);
+    return { data: chambres };
+  }
+
+  @Get(':id')
+  @Render('detail')
+  async getDetail(@Param('id') id) {
+    return await this.appService.getDetail(id);
   }
 }
