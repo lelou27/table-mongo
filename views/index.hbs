@@ -5,6 +5,23 @@
   <title>App</title>
 </head>
 <body>
-{{ message }}
+<table>
+    <thead>
+    <th>Nom du bien</th>
+    <th>Description du bien</th>
+    <th>Nom de l'hôte</th>
+    <th>Localisation</th>
+    </thead>
+    <tbody>
+    {{#data}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{description}}</td>
+            <td>{{host_name}}</td>
+            <td>{{host_location}}</td>
+        </tr>
+    {{/data}}
+    </tbody>
+</table>
 </body>
 </html>
