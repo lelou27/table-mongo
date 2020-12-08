@@ -1,4 +1,4 @@
-import { Get, Controller, Render } from '@nestjs/common';
+import { Get, Controller, Render, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -7,7 +7,11 @@ export class AppController {
 
   @Get()
   @Render('index')
-  root() {
-    return { message: this.appService.getHello() };
+  async root(@Query('page') page) {
+    if (!page) {
+      page = 1;
+    }
+
+    return await this.appService.getChambres(page);
   }
 }
