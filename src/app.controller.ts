@@ -10,4 +10,10 @@ export class AppController {
   root() {
     return { message: this.appService.getHello() };
   }
+
+  @Get("/:id")
+  @Render('detail')
+  detail() {
+    return { message: this.appService.getHello() };
+  }
 }
