@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Chambre, ChambreDocument } from './schemas/chambre.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class AppService {
@@ -22,5 +23,11 @@ export class AppService {
 
   getDetail(id): Promise<Chambre> {
     return this.chambreModel.findById(id).exec();
+  }
+
+  async updateChambre(chambre: Chambre, id): Promise<Chambre> {
+    return await this.chambreModel
+      .findByIdAndUpdate(id, chambre, { new: true })
+      .exec();
   }
 }

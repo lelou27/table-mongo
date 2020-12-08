@@ -5,29 +5,28 @@
   <title>App</title>
 </head>
 <body>
-{{#data}}
-<form>
+<form method="POST" action="/updateOne">
+  <input type="hidden" name="id" value="{{data._id}}">
     <div>
         <label for="uname">Nom du bien:</label>
-        <input type="text" id="uname" name="name" value={{name}}>
+        <input type="text" id="uname" name="name" value="{{data.name}}">
     </div>
     <div>
         <label for="uname">Description du bien</label>
-        <input type="textarea" id="uname" name="name" value={{description}}>
+        <input type="textarea" id="uname" name="description" value="{{data.description}}">
     </div>
     <div>
         <label for="uname">Nom de l'hôte:</label>
-        <input type="text" id="uname" name="name" value={{host_name}}>
+        <input type="text" id="uname" name="host_name" value="{{data.host_name}}">
     </div>
     <div>
         <label for="uname">Localisation</label>
-        <input type="text" id="uname" name="name" value={{host_location}}>
+        <input type="text" id="uname" name="host_location" value="{{data.host_location}}">
     </div>
     <a href="javascript:window.history.go(-1)">[ Retour ]</a>
     <div>
-        <button>Envoyer</button>
+        <input type="submit" value="Envoyer" />
     </div>
 </form>
-{{/data}}
 </body>
 </html>
