@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>App</title>
+</head>
+<body>
+{{#data}}
+<form>
+    <div>
+        <label for="uname">Nom du bien:</label>
+        <input type="text" id="uname" name="name" value={{name}}>
+    </div>
+    <div>
+        <label for="uname">Description du bien</label>
+        <input type="textarea" id="uname" name="name" value={{description}}>
+    </div>
+    <div>
+        <label for="uname">Nom de l'hôte:</label>
+        <input type="text" id="uname" name="name" value={{host_name}}>
+    </div>
+    <div>
+        <label for="uname">Localisation</label>
+        <input type="text" id="uname" name="name" value={{host_location}}>
+    </div>
+    <a href="javascript:window.history.go(-1)">[ Retour ]</a>
+    <div>
+        <button>Envoyer</button>
+    </div>
+</form>
+{{/data}}
+</body>
+</html>

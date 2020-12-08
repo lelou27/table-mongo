@@ -21,4 +21,10 @@ export class AppController {
   async getDetail(@Param('id') id) {
     return await this.appService.getDetail(id);
   }
+
+  @Get("/:id")
+  @Render('detail')
+  detail() {
+    return { message: this.appService.getHello() };
+  }
 }
