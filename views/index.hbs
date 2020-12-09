@@ -69,21 +69,11 @@
 <body>
 
 <div class="tri-dates">
-  <form method="GET" action="/">
-    <input type="hidden" name="page" value="{{ page }}">
     <label for="tri">
-      Trier par date
-      <select name="operand" required>
-        <option value=">">Supérieur</option>
-        <option value="<">Inférieur</option>
-        <option value="=">Egal</option>
-      </select>
-      à
-      <input name="date" type="date" required value="{{ date }}">
-      <input type="submit" value="Rechercher">
-      <input type="submit" value="Page suivante">
+      <input name="date" id="date1" type="date" >
+      <input name="date" id="date2" type="date" >
+      <input type="button" value="Rechercher" onclick="findDate()">
     </label>
-  </form>
 </div>
 
 <div class="pagination">
@@ -120,8 +110,22 @@
     if (searchParams.get("sort") === "false"){
         document.getElementById("sort").checked = false
     }
+    if (searchParams.get("date1") != null ){
+        document.getElementById("date1").value = searchParams.get("date1")
+    }
+    if (searchParams.get("date2") != null ){
+        document.getElementById("date2").value = searchParams.get("date2")
+    }
     if (searchParams.get("page")===null || searchParams.get("page") === "1" || isNaN(parseInt(searchParams.get("page")))){
         document.getElementById("previousPage").style.display = "none";
+    }
+    function findDate() {
+        const url = new URL(document.location.href);
+        const search_params = url.searchParams;
+        search_params.set('date1', document.getElementById("date1").value);
+        search_params.set('date2', document.getElementById("date2").value);
+        url.search = search_params.toString();
+        document.location = url.toString();
     }
     function sortData() {
         const url = new URL(document.location.href);
