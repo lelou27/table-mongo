@@ -19,12 +19,15 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async root(@Query('page') page) {
+  async root(@Query('page') page,@Query('sort') sort) {
     if (!page) {
       page = 1;
     }
+    if (!sort) {
+      sort = 1;
+    }
 
-    const chambres = await this.appService.getChambres(page);
+    const chambres = await this.appService.getChambres(page,sort);
     return { data: chambres };
   }
 
