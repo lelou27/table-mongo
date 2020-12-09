@@ -14,12 +14,16 @@ export class AppService {
     return 'Hello World!';
   }
 
-  async getChambres(page = 1): Promise<Chambre[]> {
+  async getChambres(page = 1,sort = "true"): Promise<Chambre[]> {
     if (page <= 0) page = 1;
+    let sortValue = 1;
+    if (sort === "false"){
+      sortValue = -1
+    }
     const pageSize = 10;
     const skip = pageSize * (page - 1);
 
-    return this.chambreModel.find().skip(skip).limit(pageSize);
+    return this.chambreModel.find().skip(skip).limit(pageSize).sort({host_since : sortValue});
   }
 
   getDetail(id): Promise<Chambre> {
@@ -57,5 +61,9 @@ export class AppService {
         .skip(skip)
         .limit(pageSize);
     }
+  }
+
+  async deleteChambre(id) {
+    return this.chambreModel.deleteOne({ _id: id });
   }
 }

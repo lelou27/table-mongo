@@ -46,7 +46,7 @@
         }
 
         .imgs {
-          min-width: 100%;
+            min-width: 100%;
         }
 
         .tri-dates {
@@ -59,6 +59,10 @@
             .product-card {
                 flex: 1 21%;
             }
+        }
+
+        label{
+            text-align: center;
         }
     </style>
 </head>
@@ -80,33 +84,50 @@
       <input type="submit" value="Page suivante">
     </label>
   </form>
+</div>
 
+<div class="pagination">
+    <label>
+        <input type="checkbox" id="sort" checked="checked" onclick="sortData()"/>
+        <span>Tri croissant</span>
+    </label>
 </div>
 
 <section class="products">
-{{#data}}
-    <div class="product-card" onclick="document.location = '{{_id}}';">
-        <div class="product-image">
-            <img class="imgs" src="{{picture_url}}">
+    {{#data}}
+        <div class="product-card" onclick="document.location = '{{_id}}';">
+            <div class="product-image">
+                <img class="imgs" src="{{picture_url}}">
+            </div>
+            <div class="product-info">
+                <h5>{{name}}</h5>
+                <h6>{{host_location}}</h6>
+            </div>
         </div>
-        <div class="product-info">
-            <h5>{{name}}</h5>
-            <h6>{{host_location}}</h6>
-        </div>
-    </div>
-{{/data}}
+    {{/data}}
 </section>
-  <div class="pagination">
-      <button class="btn" id="previousPage" onclick="previousPage()"><</button>
-      <span id="pageInfo"></span>
-      <button class="btn" onclick="nextPage()">></button>
-  </div>
+
+<div class="pagination">
+    <button class="btn" id="previousPage" onclick="previousPage()"><</button>
+    <span id="pageInfo"></span>
+    <button class="btn" onclick="nextPage()">></button>
+</div>
 </body>
 <script>
     const searchParams = new URLSearchParams(window.location.search);
     document.getElementById("pageInfo").innerHTML = searchParams.get("page") ?? 1;
+    if (searchParams.get("sort") === "false"){
+        document.getElementById("sort").checked = false
+    }
     if (searchParams.get("page")===null || searchParams.get("page") === "1" || isNaN(parseInt(searchParams.get("page")))){
         document.getElementById("previousPage").style.display = "none";
+    }
+    function sortData() {
+        const url = new URL(document.location.href);
+        const search_params = url.searchParams;
+        search_params.set('sort', document.getElementById("sort").checked);
+        url.search = search_params.toString();
+        document.location = url.toString();
     }
     function nextPage() {
         const url = new URL(document.location.href);
