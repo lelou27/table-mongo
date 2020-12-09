@@ -74,7 +74,6 @@
       <input name="date" id="date2" type="date" >
       <input type="button" value="Rechercher" onclick="findDate()">
     </label>
-  </form>
 </div>
 
 <div class="pagination">
@@ -106,6 +105,7 @@
 </body>
 <script>
     const searchParams = new URLSearchParams(window.location.search);
+    console.log(searchParams);
     document.getElementById("pageInfo").innerHTML = searchParams.get("page") ?? 1;
     if (searchParams.get("sort") === "false"){
         document.getElementById("sort").checked = false

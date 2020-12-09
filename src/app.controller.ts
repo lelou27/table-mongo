@@ -24,7 +24,6 @@ export class AppController {
     if (!sort) {
       sort = 1;
     }
-
     const chambres = await this.appService.getChambres(page,sort,date1,date2);
     return { data: chambres };
   }
@@ -56,6 +55,6 @@ export class AppController {
   @Get('/delete/:id')
   async deleteChambre(@Param('id') id, @Res() res: express.Response) {
     await this.appService.deleteChambre(id);
-    return res.redirect(`/index`);
+    return res.redirect(`/`);
   }
 }
