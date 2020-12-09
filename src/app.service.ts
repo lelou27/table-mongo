@@ -31,4 +31,8 @@ export class AppService {
     console.log(chambre);
     return this.chambreModel.findByIdAndUpdate(id, chambre, { new: true });
   }
+
+  async deleteChambre(id) {
+    return this.chambreModel.deleteOne({ _id: id });
+  }
 }
