@@ -17,7 +17,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async root(@Query('page') page,@Query('sort') sort) {
+  async root(@Query('page') page, @Query('sort') sort) {
     if (!page) {
       page = 1;
     }
@@ -25,7 +25,7 @@ export class AppController {
       sort = 1;
     }
 
-    const chambres = await this.appService.getChambres(page,sort);
+    const chambres = await this.appService.getChambres(page, sort);
     return { data: chambres };
   }
 
@@ -56,6 +56,6 @@ export class AppController {
   @Get('/delete/:id')
   async deleteChambre(@Param('id') id, @Res() res: express.Response) {
     await this.appService.deleteChambre(id);
-    return res.redirect(`/index`);
+    return res.redirect(`/`);
   }
 }
