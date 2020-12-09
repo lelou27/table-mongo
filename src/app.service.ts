@@ -15,7 +15,7 @@ export class AppService {
   }
 
   async getChambres(page = 1): Promise<Chambre[]> {
-    if (page <= 0) page = 1
+    if (page <= 0) page = 1;
     const pageSize = 10;
     const skip = pageSize * (page - 1);
 
@@ -27,8 +27,8 @@ export class AppService {
   }
 
   async updateChambre(chambre: Chambre, id): Promise<Chambre> {
-    return await this.chambreModel
-      .findByIdAndUpdate(id, chambre, { new: true })
-      .exec();
+    console.log('okokokok');
+    console.log(chambre);
+    return this.chambreModel.findByIdAndUpdate(id, chambre, { new: true });
   }
 }

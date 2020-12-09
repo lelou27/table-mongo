@@ -10,7 +10,7 @@ export class Chambre {
   name: string;
 
   @Prop()
-  description: number;
+  description: string;
 
   @Prop()
   host_name: string;

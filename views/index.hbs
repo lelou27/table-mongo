@@ -45,6 +45,10 @@
             font-size: 1rem;
         }
 
+        .imgs {
+          min-width: 100%;
+        }
+
         @media (max-width: 920px) {
             .product-card {
                 flex: 1 21%;
@@ -56,27 +60,17 @@
 </head>
 <body>
 <section class="products">
-  <table class="highlight centered container">
-      <thead>
-      <th>Nom du bien</th>
-      <th>Description du bien</th>
-      <th>Nom de l'hôte</th>
-      <th>Localisation</th>
-      </thead>
-      <tbody>
-      {{#data}}
-          <div class="product-card" onclick="document.location = '{{_id}}';">
-              <div class="product-image">
-                  <img src="{{picture_url}}">
-              </div>
-              <div class="product-info">
-                  <h5>{{name}}</h5>
-                  <h6>{{host_location}}</h6>
-              </div>
-          </div>
-      {{/data}}
-      </tbody>
-  </table>
+{{#data}}
+    <div class="product-card" onclick="document.location = '{{_id}}';">
+        <div class="product-image">
+            <img class="imgs" src="{{picture_url}}">
+        </div>
+        <div class="product-info">
+            <h5>{{name}}</h5>
+            <h6>{{host_location}}</h6>
+        </div>
+    </div>
+{{/data}}
 </section>
   <div class="pagination">
       <button class="btn" id="previousPage" onclick="previousPage()"><</button>
@@ -87,9 +81,7 @@
 <script>
     const searchParams = new URLSearchParams(window.location.search);
     document.getElementById("pageInfo").innerHTML = searchParams.get("page") ?? 1;
-    // console.log(searchParams.get("page"))
     if (searchParams.get("page")===null || searchParams.get("page") === "1" || isNaN(parseInt(searchParams.get("page")))){
-        // console.log(searchParams.get("page"))
         document.getElementById("previousPage").style.display = "none";
     }
     function nextPage() {
