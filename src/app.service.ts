@@ -15,7 +15,8 @@ export class AppService {
   }
 
   async getChambres(page = 1): Promise<Chambre[]> {
-    const pageSize = 20;
+    if (page <= 0) page = 1
+    const pageSize = 10;
     const skip = pageSize * (page - 1);
 
     return this.chambreModel.find().skip(skip).limit(pageSize);

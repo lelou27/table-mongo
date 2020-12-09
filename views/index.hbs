@@ -1,8 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>App</title>
+    <meta charset="utf-8" />
+    <title>App</title>
+
+    <style>
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .product-card {
+            padding: 2%;
+            flex-grow: 1;
+            flex-basis: 16%;
+
+            display: flex; /* so child elements can use flexbox stuff too! */
+        }
+
+        .product-card {
+            flex: 1 16%;
+        }
+
+        .product-image img {
+            max-width: 100%;
+        }
+
+        .pagination{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .btn{
+            background-color: #ee4243;
+            margin: 20px;
+            border: none;
+            color: #fff;
+            box-shadow: 0 5px 9px 0 rgba(31, 105, 236, 0.2);
+            border-radius: 7px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 920px) {
+            .product-card {
+                flex: 1 21%;
+            }
+        }
+    </style>
+</head>
+<body>
+<section class="products">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
@@ -16,14 +67,49 @@
     </thead>
     <tbody>
     {{#data}}
-        <tr onclick="document.location = '{{_id}}';">
-            <td>{{name}}</td>
-            <td>{{description}}</td>
-            <td>{{host_name}}</td>
-            <td>{{host_location}}</td>
-        </tr>
+        <div class="product-card" onclick="document.location = '{{_id}}';">
+            <div class="product-image">
+                <img src="{{picture_url}}">
+            </div>
+            <div class="product-info">
+                <h5>{{name}}</h5>
+                <h6>{{host_location}}</h6>
+            </div>
+        </div>
     {{/data}}
-    </tbody>
-</table>
+</section>
+<div class="pagination">
+    <button class="btn" id="previousPage" onclick="previousPage()"><</button>
+    <span id="pageInfo"></span>
+    <button class="btn" onclick="nextPage()">></button>
+</div>
 </body>
+<script>
+    var searchParams = new URLSearchParams(window.location.search);
+    document.getElementById("pageInfo").innerHTML = searchParams.get("page") ?? 1;
+    console.log(searchParams.get("page"))
+    if (searchParams.get("page")===null || searchParams.get("page") === "1" || isNaN(parseInt(searchParams.get("page")))){
+        console.log(searchParams.get("page"))
+        document.getElementById("previousPage").style.display = "none";
+    }
+    function nextPage() {
+        var url = new URL(document.location.href);
+        var search_params = url.searchParams;
+        if (isNaN(parseInt(searchParams.get("page")))){
+            search_params.set('page', 2);
+        }
+        else {
+            search_params.set('page', parseInt(searchParams.get("page"))+1);
+        }
+        url.search = search_params.toString();
+        document.location = url.toString();
+    }
+    function previousPage() {
+        var url = new URL(document.location.href);
+        var search_params = url.searchParams;
+        search_params.set('page', parseInt(searchParams.get("page"))-1);
+        url.search = search_params.toString();
+        document.location = url.toString();
+    }
+</script>
 </html>
