@@ -17,7 +17,12 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async root(@Query('page') page, @Query('sort') sort) {
+  async root(
+    @Query('page') page,
+    @Query('sort') sort,
+    @Query('operand') operand,
+    @Query('date') date,
+  ) {
     if (!page) {
       page = 1;
     }
@@ -25,8 +30,16 @@ export class AppController {
       sort = 1;
     }
 
-    const chambres = await this.appService.getChambres(page, sort);
-    return { data: chambres };
+    operand = operand ? operand : null;
+    date = date ? date : null;
+
+    const chambres = await this.appService.getChambres(
+      page,
+      sort,
+      operand,
+      date,
+    );
+    return { data: chambres, operand: operand, date: date };
   }
 
   @Post('/getElementsByDate')
