@@ -49,6 +49,12 @@
             min-width: 100%;
         }
 
+        .tri-dates {
+          width: 100%;
+          margin: 1rem;
+          text-align: center;
+        }
+
         @media (max-width: 920px) {
             .product-card {
                 flex: 1 21%;
@@ -59,15 +65,34 @@
             text-align: center;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
+
+<div class="tri-dates">
+  <form method="POST" action="/getElementsByDate">
+    <input type="hidden" name="page" value="{{ page }}">
+    <label for="tri">
+      Trier par date
+      <select name="operand" required>
+        <option value=">">Supérieur</option>
+        <option value="<">Inférieur</option>
+        <option value="=">Egal</option>
+      </select>
+      à
+      <input name="date" type="date" required value="{{ date }}">
+      <input type="submit" value="Rechercher">
+      <input type="submit" value="Page suivante">
+    </label>
+  </form>
+</div>
+
 <div class="pagination">
     <label>
         <input type="checkbox" id="sort" checked="checked" onclick="sortData()"/>
         <span>Tri croissant</span>
     </label>
 </div>
+
 <section class="products">
     {{#data}}
         <div class="product-card" onclick="document.location = '{{_id}}';">
