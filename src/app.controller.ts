@@ -4,8 +4,6 @@ import {
   Render,
   Query,
   Param,
-  Patch,
-  Redirect,
   Body,
   Post,
   Res,
@@ -26,6 +24,17 @@ export class AppController {
 
     const chambres = await this.appService.getChambres(page);
     return { data: chambres };
+  }
+
+  @Post('/getElementsByDate')
+  @Render('index')
+  async tri(@Body() params) {
+    if (!params.page) params.page = 1;
+    const chambres = await this.appService.getElementsByDate(
+      params,
+      params.page,
+    );
+    return { data: chambres, page: params.page + 1, date: params.date };
   }
 
   @Get(':id')

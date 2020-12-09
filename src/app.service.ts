@@ -27,8 +27,35 @@ export class AppService {
   }
 
   async updateChambre(chambre: Chambre, id): Promise<Chambre> {
-    console.log('okokokok');
-    console.log(chambre);
     return this.chambreModel.findByIdAndUpdate(id, chambre, { new: true });
+  }
+
+  async getElementsByDate(params, page) {
+    if (!page) page = 1;
+    const pageSize = 10;
+    const skip = pageSize * (page - 1);
+
+    if (params.operand === '>') {
+      return this.chambreModel
+        .find()
+        .where('host_since')
+        .gt(params.date)
+        .skip(skip)
+        .limit(pageSize);
+    } else if (params.operand === '<') {
+      return this.chambreModel
+        .find()
+        .where('host_since')
+        .lt(params.date)
+        .skip(skip)
+        .limit(pageSize);
+    } else {
+      return this.chambreModel
+        .find()
+        .where('host_since')
+        .equals(params.date)
+        .skip(skip)
+        .limit(pageSize);
+    }
   }
 }
