@@ -51,50 +51,50 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
 <section class="products">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</head>
-<body>
-<table class="highlight centered container">
-    <thead>
-    <th>Nom du bien</th>
-    <th>Description du bien</th>
-    <th>Nom de l'hôte</th>
-    <th>Localisation</th>
-    </thead>
-    <tbody>
-    {{#data}}
-        <div class="product-card" onclick="document.location = '{{_id}}';">
-            <div class="product-image">
-                <img src="{{picture_url}}">
-            </div>
-            <div class="product-info">
-                <h5>{{name}}</h5>
-                <h6>{{host_location}}</h6>
-            </div>
-        </div>
-    {{/data}}
+  <table class="highlight centered container">
+      <thead>
+      <th>Nom du bien</th>
+      <th>Description du bien</th>
+      <th>Nom de l'hôte</th>
+      <th>Localisation</th>
+      </thead>
+      <tbody>
+      {{#data}}
+          <div class="product-card" onclick="document.location = '{{_id}}';">
+              <div class="product-image">
+                  <img src="{{picture_url}}">
+              </div>
+              <div class="product-info">
+                  <h5>{{name}}</h5>
+                  <h6>{{host_location}}</h6>
+              </div>
+          </div>
+      {{/data}}
+      </tbody>
+  </table>
 </section>
-<div class="pagination">
-    <button class="btn" id="previousPage" onclick="previousPage()"><</button>
-    <span id="pageInfo"></span>
-    <button class="btn" onclick="nextPage()">></button>
-</div>
+  <div class="pagination">
+      <button class="btn" id="previousPage" onclick="previousPage()"><</button>
+      <span id="pageInfo"></span>
+      <button class="btn" onclick="nextPage()">></button>
+  </div>
 </body>
 <script>
-    var searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
     document.getElementById("pageInfo").innerHTML = searchParams.get("page") ?? 1;
-    console.log(searchParams.get("page"))
+    // console.log(searchParams.get("page"))
     if (searchParams.get("page")===null || searchParams.get("page") === "1" || isNaN(parseInt(searchParams.get("page")))){
-        console.log(searchParams.get("page"))
+        // console.log(searchParams.get("page"))
         document.getElementById("previousPage").style.display = "none";
     }
     function nextPage() {
-        var url = new URL(document.location.href);
-        var search_params = url.searchParams;
+        const url = new URL(document.location.href);
+        const search_params = url.searchParams;
         if (isNaN(parseInt(searchParams.get("page")))){
             search_params.set('page', 2);
         }
@@ -105,8 +105,8 @@
         document.location = url.toString();
     }
     function previousPage() {
-        var url = new URL(document.location.href);
-        var search_params = url.searchParams;
+        const url = new URL(document.location.href);
+        const search_params = url.searchParams;
         search_params.set('page', parseInt(searchParams.get("page"))-1);
         url.search = search_params.toString();
         document.location = url.toString();
