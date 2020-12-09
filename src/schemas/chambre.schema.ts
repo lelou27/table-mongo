@@ -17,6 +17,9 @@ export class Chambre {
 
   @Prop()
   host_location: string;
+
+  @Prop()
+  picture_url: string;
 }
 
 export const ChambreSchema = SchemaFactory.createForClass(Chambre);
