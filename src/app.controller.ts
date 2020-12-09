@@ -40,4 +40,10 @@ export class AppController {
 
     return res.redirect(`/${chambre.id}`);
   }
+
+  @Get('/delete/:id')
+  async deleteChambre(@Param('id') id, @Res() res: express.Response) {
+    await this.appService.deleteChambre(id);
+    return res.redirect(`/index`);
+  }
 }
