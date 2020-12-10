@@ -22,10 +22,12 @@ function gotDetections(error, results) {
   if (error) {
     console.error(error);
   }
-  document.getElementById('prediction-list').innerText = `
-            Prediction: ${results[0].label}\n
-            Probabilité: ${results[0].confidence}\n
-          `;
+  let resultat ="";
+  results.forEach(result => resultat += `
+            Prediction: ${result.label}\n
+            Probabilité: ${result.confidence}\n
+          `)
+  document.getElementById('prediction-list').innerText = resultat;
 
   for (let i = 0; i < results.length; i++) {
     let object = results[i];
