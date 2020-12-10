@@ -26,4 +26,9 @@ export class UploadImgService {
     });
     return await image.save();
   }
+
+  async deleteData(id) {
+    console.log(id);
+    return this.imageModel.deleteOne({ _id: id });
+  }
 }
