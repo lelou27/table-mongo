@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
   <meta charset="utf-8">
   <title>TensorFlow.js: Tuberculosis Detector</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +32,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="/index.html">Uplaod image</a>
+  <a class="navbar-brand" href="/index.html">Upload image</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -62,7 +64,7 @@
   <div class="row">
     <div class="col-6">
       <h2 class="ml-3">Image</h2>
-      <img id="selected-image" class="ml-3" width="250">
+      <img id="selected-image" class="ml-3" width="250" height="250">
     </div>
     <div class="col-6">
       <h2 class="ml-3">Predictions</h2>
@@ -75,12 +77,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
 <script>
-  const imgSelected = new URLSearchParams(window.location.search).get('selected')
+
+
+
+
+  const imgSelected = new URLSearchParams(window.location.search).get('selected');
   if (imgSelected) {
     $("#selected-image").attr("src", `../../${imgSelected}`);
   }
+
 
   $("#image-selector").change(function () {
   imageLoaded = false;
@@ -90,9 +96,54 @@
     $("#selected-image").attr("src", dataURL);
     $("#prediction-list").empty();
     imageLoaded = true;
-  }
+
+
+      function preload() {
+          img = document.getElementById('selected-image');
+          detector = ml5.objectDetector('cocossd');
+      }
+
+      function setup() {
+          //createCanvas(640, 480);
+          //image(img, 0, 0);
+          detector.detect(img, gotDetections);
+      }
+      preload();
+      setup();
+  };
   let file = $("#image-selector").prop('files')[0];
   reader.readAsDataURL(file);
-});</script>
+});
+
+
+
+  let img;
+  let detector;
+
+
+
+  function gotDetections(error, results) {
+      document.getElementById('prediction-list').innerText = `
+            Prediction: ${results[0].label}\n
+            Probabilité: ${results[0].confidence}\n
+          `;
+      for (let i = 0; i < results.length; i++) {
+          let object = results[i];
+          console.log(object);
+          stroke(0, 255, 0);
+          strokeWeight(4);
+          noFill();
+          rect(object.x, object.y, object.width, object.height);
+          noStroke();
+          fill(255);
+          textSize(24);
+          text(object.label, object.x + 10, object.y + 24);
+      }
+  }
+
+
+
+
+</script>
 </body>
 </html>
