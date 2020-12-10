@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Chambre, ChambreSchema } from './schemas/chambre.schema';
 import { UploadImgModule } from './upload-img/upload-img.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -12,6 +13,9 @@ import { UploadImgModule } from './upload-img/upload-img.module';
     ),
     MongooseModule.forFeature([{ name: Chambre.name, schema: ChambreSchema }]),
     UploadImgModule,
+    MulterModule.register({
+      dest: './public',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
