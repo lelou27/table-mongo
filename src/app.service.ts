@@ -14,7 +14,7 @@ export class AppService {
     return 'Hello World!';
   }
 
-  async getChambres(page = 1, sort = 'true', operand = null, date = null): Promise<Chambre[]> {
+  async getChambres(page = 1,sort = "true",date1=null,date2=null): Promise<Chambre[]> {
     if (page <= 0) page = 1;
     let sortValue = 1;
     if (sort === 'false') {
@@ -22,37 +22,12 @@ export class AppService {
     }
     const pageSize = 10;
     const skip = pageSize * (page - 1);
-
-    if (operand !== null) {
-      if (operand === '>') {
-        return this.chambreModel
-          .find()
-          .where('host_since')
-          .gt(date)
-          .skip(skip)
-          .limit(pageSize);
-      } else if (operand === '<') {
-        return this.chambreModel
-          .find()
-          .where('host_since')
-          .lt(date)
-          .skip(skip)
-          .limit(pageSize);
-      } else {
-        return this.chambreModel
-          .find()
-          .where('host_since')
-          .equals(date)
-          .skip(skip)
-          .limit(pageSize);
-      }
-    }
-
-    return this.chambreModel
-      .find()
-      .skip(skip)
-      .limit(pageSize)
-      .sort({ host_since: sortValue });
+if (date1 === null && date2 === null){
+  return this.chambreModel.find().skip(skip).limit(pageSize).sort({host_since : sortValue});
+}
+else {
+  return this.chambreModel.find({"host_since":{$gte:date1,$lte:date2}}).skip(skip).limit(pageSize).sort({host_since : sortValue});
+}
   }
 
   getDetail(id): Promise<Chambre> {
