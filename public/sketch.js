@@ -62,7 +62,7 @@ function setup() {
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.get('selected') != null) {
     document.getElementById('selected-image').style.display = 'none';
-    createCanvas(1920, 1600);
+    createCanvas(270, 270);
     // console.log(detector);
     image(img, 0, 0);
     detector.detect(img, gotDetections);

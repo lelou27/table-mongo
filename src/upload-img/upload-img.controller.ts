@@ -20,6 +20,7 @@ import {
 import * as fs from 'fs';
 import * as uniqid from 'uniqid';
 import * as express from 'express';
+import * as sharp from 'sharp';
 
 @Controller('upload-img')
 export class UploadImgController {
@@ -48,14 +49,18 @@ export class UploadImgController {
     let filename = `${uniqid()}-${file.originalname}`;
     filename = filename.replace(' ', '');
 
-    fs.writeFile(`public/${filename}`, file.buffer, async (err) => {
-      if (!err) {
-        file.originalname = filename;
-        await this.uploadImgService.saveImage(file);
-      }
+    fs.writeFile(
+      `public/${filename}`,
+      await sharp(file.buffer).resize(200).toBuffer(),
+      async (err) => {
+        if (!err) {
+          file.originalname = filename;
+          await this.uploadImgService.saveImage(file);
+        }
 
-      res.redirect(`/upload-img/test/?selected=${filename}`);
-    });
+        res.redirect(`/upload-img/test/?selected=${filename}`);
+      },
+    );
   }
 
   @Post('/updatePredictions')
