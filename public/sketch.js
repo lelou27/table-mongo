@@ -9,6 +9,7 @@
 
 let img;
 let detector;
+let resultsToSend = {};
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -27,6 +28,15 @@ function gotDetections(error, results) {
   if (error) {
     console.error(error);
   }
+
+  resultsToSend = results;
+  console.log(results);
+
+  axios.post('http://localhost:3000/upload-img/updatePredictions', {
+    image: new URLSearchParams(window.location.search).get('selected'),
+    predictions: resultsToSend,
+  });
+
   let resultat ="";
   results.forEach(result => resultat += `
             Prediction: ${result.label}\n

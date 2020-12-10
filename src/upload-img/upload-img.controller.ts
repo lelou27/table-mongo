@@ -37,7 +37,7 @@ export class UploadImgController {
     if (!page) page = 1;
 
     const images = await this.uploadImgService.getAll(page);
-    returnObject = { ...returnObject, images: images}
+    returnObject = { ...returnObject, images: images };
 
     return returnObject;
   }
@@ -59,8 +59,7 @@ export class UploadImgController {
   }
 
   @Post('/updatePredictions')
-  async updatePredictions(@Body() params) {
-    console.log('okokokokokkooko');
-    console.log(params);
+  updatePredictions(@Body() params) {
+    this.uploadImgService.updatePredictions(params);
   }
 }
