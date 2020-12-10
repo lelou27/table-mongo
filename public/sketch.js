@@ -13,8 +13,13 @@ let resultsToSend = {};
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
+
+  document.getElementById('progress-bar').style.display = 'none';
+
   if (searchParams.get('selected') != null) {
     img = loadImage('http://127.0.0.1:3000/' + searchParams.get('selected'));
+    document.getElementById('progress-bar').style.display = 'flex';
+
   }
   detector = ml5.objectDetector('cocossd');
 }
@@ -22,12 +27,6 @@ function preload() {
 function gotDetections(error, results) {
   if (error) {
     console.error(error);
-  }
-  for (const result of results) {
-    document.getElementById('prediction-list').innerText += `
-            Prediction: ${result.label}\n
-            Probabilité: ${result.confidence}\n
-          `;
   }
 
   resultsToSend = results;
@@ -37,6 +36,14 @@ function gotDetections(error, results) {
     image: new URLSearchParams(window.location.search).get('selected'),
     predictions: resultsToSend,
   });
+
+  let resultat ="";
+  results.forEach(result => resultat += `
+            Prediction: ${result.label}\n
+            Probabilité: ${result.confidence}\n
+          `)
+  document.getElementById('prediction-list').innerText = resultat;
+  document.getElementById('progress-bar').style.display = 'none';
 
   for (let i = 0; i < results.length; i++) {
     let object = results[i];
