@@ -9,6 +9,7 @@
 
 let img;
 let detector;
+let resultsToSend = {};
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -22,10 +23,20 @@ function gotDetections(error, results) {
   if (error) {
     console.error(error);
   }
-  document.getElementById('prediction-list').innerText = `
-            Prediction: ${results[0].label}\n
-            Probabilité: ${results[0].confidence}\n
+  for (const result of results) {
+    document.getElementById('prediction-list').innerText += `
+            Prediction: ${result.label}\n
+            Probabilité: ${result.confidence}\n
           `;
+  }
+
+  resultsToSend = results;
+  console.log(results);
+
+  axios.post('http://localhost:3000/upload-img/updatePredictions', {
+    image: new URLSearchParams(window.location.search).get('selected'),
+    predictions: resultsToSend,
+  });
 
   for (let i = 0; i < results.length; i++) {
     let object = results[i];

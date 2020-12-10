@@ -26,4 +26,20 @@ export class UploadImgService {
     });
     return await image.save();
   }
+
+  async updatePredictions(params) {
+    const image = await this.imageModel.findOne({ imgName: params.image });
+
+    for (const prediction of params.predictions) {
+      const objectToCreate = {
+        type: prediction.label,
+        probability: prediction.confidence,
+      };
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      image.analyse.push(objectToCreate);
+    }
+
+    image.save();
+  }
 }
