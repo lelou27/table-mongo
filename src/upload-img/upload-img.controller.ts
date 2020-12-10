@@ -1,7 +1,8 @@
 import {
   Body,
   Controller,
-  Get, Param,
+  Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -25,6 +26,12 @@ import * as sharp from 'sharp';
 @Controller('upload-img')
 export class UploadImgController {
   constructor(private uploadImgService: UploadImgService) {}
+
+  @Get('test/jeu')
+  @Render('test')
+  test() {
+    return {};
+  }
 
   @Get('/test')
   @Render('uplaodImage')
