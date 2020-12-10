@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { mongoosePaginate } from 'mongoose-paginate-v2';
 
 export type ChambreDocument = Chambre & Document;
 
