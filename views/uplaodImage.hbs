@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
+  <style>
         body {
             min-height: 75rem;
             padding-top: 4.5rem;
@@ -22,6 +22,27 @@
             -ms-user-select: none;
             user-select: none;
         }
+        img {
+          max-width: 100%;
+        }
+
+        .pagination {
+          justify-content: center;
+        }
+
+        canvas {
+          max-width: 20%;
+          max-height: 20vh;
+        }
+
+        .divImage {
+          max-width: 20%;
+          margin-top: 3rem;
+          text-align: center;
+          margin-left: 3rem;
+          padding-bottom: 1rem;
+        }
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
@@ -73,15 +94,36 @@
     <script src="http://127.0.0.1:3000/sketch.js"></script>
 </main>
 
+<div class="row">
+  {{#images}}
+    <div class="row divImage" style="border-bottom: 2px dotted black">
+      <div class="col-6">
+        <img class="imgs" src="/{{imgName}}">
+      </div>
+      <div class="col-6">
+        {{#analyse}}
+          <li> {{name}}: {{probability}}</li>
+        {{/analyse}}
+      </div>
+    </div>
+  {{/images}}
+</div>
+{{#if images}}
+  <div class="pagination">
+    <button class="btn" id="previousPage" onclick="previousPage()"><</button>
+    <span id="pageInfo"></span>
+    <button class="btn" onclick="nextPage()">></button>
+  </div>
+{{/if}}
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
 <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
 <script>
-
-
     const imgSelected = new URLSearchParams(window.location.search).get('selected');
+    const searchParams = new URLSearchParams(window.location.search);
     if (imgSelected) {
         $("#selected-image").attr("src", `../../${imgSelected}`);
     }
@@ -101,7 +143,25 @@
     });
 
 
-
+    function nextPage() {
+      const url = new URL(document.location.href);
+      const search_params = url.searchParams;
+      if (isNaN(parseInt(searchParams.get("page")))){
+        search_params.set('page', 2);
+      }
+      else {
+        search_params.set('page', parseInt(searchParams.get("page"))+1);
+      }
+      url.search = search_params.toString();
+      document.location = url.toString();
+    }
+    function previousPage() {
+      const url = new URL(document.location.href);
+      const search_params = url.searchParams;
+      search_params.set('page', parseInt(searchParams.get("page"))-1);
+      url.search = search_params.toString();
+      document.location = url.toString();
+    }
 
 </script>
 

@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   Get,
+  Patch,
   Post,
   Query,
   Render,
@@ -25,11 +27,19 @@ export class UploadImgController {
 
   @Get('/test')
   @Render('uplaodImage')
-  get(@Query('selected') selected) {
+  async get(@Query('selected') selected, @Query('page') page) {
+    let returnObject = {};
+
     if (selected) {
-      return { selected: selected };
+      returnObject = { selected: selected };
     }
-    return {};
+
+    if (!page) page = 1;
+
+    const images = await this.uploadImgService.getAll(page);
+    returnObject = { ...returnObject, images: images}
+
+    return returnObject;
   }
 
   @Post('upload')
@@ -46,5 +56,11 @@ export class UploadImgController {
 
       res.redirect(`/upload-img/test/?selected=${filename}`);
     });
+  }
+
+  @Post('/updatePredictions')
+  async updatePredictions(@Body() params) {
+    console.log('okokokokokkooko');
+    console.log(params);
   }
 }

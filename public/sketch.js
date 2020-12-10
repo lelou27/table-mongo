@@ -12,8 +12,8 @@ let detector;
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
-  if (searchParams.get("selected")!=null){
-    img = loadImage('http://127.0.0.1:3000/'+ searchParams.get("selected"));
+  if (searchParams.get('selected') != null) {
+    img = loadImage('http://127.0.0.1:3000/' + searchParams.get('selected'));
   }
   detector = ml5.objectDetector('cocossd');
 }
@@ -26,7 +26,7 @@ function gotDetections(error, results) {
             Prediction: ${results[0].label}\n
             Probabilité: ${results[0].confidence}\n
           `;
-  console.log(results);
+
   for (let i = 0; i < results.length; i++) {
     let object = results[i];
     stroke(0, 255, 0);
@@ -42,8 +42,8 @@ function gotDetections(error, results) {
 
 function setup() {
   const searchParams = new URLSearchParams(window.location.search);
-  if (searchParams.get("selected")!=null) {
-    document.getElementById("selected-image").style.display = "none";
+  if (searchParams.get('selected') != null) {
+    document.getElementById('selected-image').style.display = 'none';
     createCanvas(1920, 1600);
     // console.log(detector);
     image(img, 0, 0);
