@@ -10,6 +10,13 @@ export class UploadImgService {
     @InjectModel(Image.name) private imageModel: Model<ImageDocument>,
   ) {}
 
+  async getAll(page) {
+    const pageSize = 10;
+    const skip = pageSize * (page - 1);
+
+    return this.imageModel.find().skip(skip).limit(pageSize);
+  }
+
   async saveImage(file) {
     const image = new this.imageModel({
       date: moment().format('DD/MM/YYYY'),
