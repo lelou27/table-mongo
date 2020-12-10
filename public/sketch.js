@@ -9,11 +9,17 @@
 
 let img;
 let detector;
+let resultsToSend = {};
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
+
+  document.getElementById('progress-bar').style.display = 'none';
+
   if (searchParams.get('selected') != null) {
     img = loadImage('http://127.0.0.1:3000/' + searchParams.get('selected'));
+    document.getElementById('progress-bar').style.display = 'flex';
+
   }
   detector = ml5.objectDetector('cocossd');
 }
@@ -22,10 +28,22 @@ function gotDetections(error, results) {
   if (error) {
     console.error(error);
   }
-  document.getElementById('prediction-list').innerText = `
-            Prediction: ${results[0].label}\n
-            Probabilité: ${results[0].confidence}\n
-          `;
+
+  resultsToSend = results;
+  console.log(results);
+
+  axios.post('http://localhost:3000/upload-img/updatePredictions', {
+    image: new URLSearchParams(window.location.search).get('selected'),
+    predictions: resultsToSend,
+  });
+
+  let resultat ="";
+  results.forEach(result => resultat += `
+            Prediction: ${result.label}\n
+            Probabilité: ${result.confidence}\n
+          `)
+  document.getElementById('prediction-list').innerText = resultat;
+  document.getElementById('progress-bar').style.display = 'none';
 
   for (let i = 0; i < results.length; i++) {
     let object = results[i];
