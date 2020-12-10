@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, Param,
   Patch,
   Post,
   Query,
@@ -61,5 +61,11 @@ export class UploadImgController {
   @Post('/updatePredictions')
   updatePredictions(@Body() params) {
     this.uploadImgService.updatePredictions(params);
+  }
+
+  @Get('/delete/:id')
+  async deleteData(@Param('id') id, @Res() res: express.Response) {
+    await this.uploadImgService.deleteData(id);
+    return res.redirect(`/upload-img/test`);
   }
 }
