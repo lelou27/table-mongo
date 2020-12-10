@@ -12,8 +12,13 @@ let detector;
 
 function preload() {
   const searchParams = new URLSearchParams(window.location.search);
+
+  document.getElementById('progress-bar').style.display = 'none';
+
   if (searchParams.get('selected') != null) {
     img = loadImage('http://127.0.0.1:3000/' + searchParams.get('selected'));
+    document.getElementById('progress-bar').style.display = 'flex';
+
   }
   detector = ml5.objectDetector('cocossd');
 }
@@ -28,6 +33,7 @@ function gotDetections(error, results) {
             Probabilité: ${result.confidence}\n
           `)
   document.getElementById('prediction-list').innerText = resultat;
+  document.getElementById('progress-bar').style.display = 'none';
 
   for (let i = 0; i < results.length; i++) {
     let object = results[i];
