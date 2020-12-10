@@ -1,149 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
-    <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
-  <meta charset="utf-8">
-  <title>TensorFlow.js: Tuberculosis Detector</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Use the power of Machine Learning to diagnose TB from chest x-rays.">
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <style>
-    body {
-      min-height: 75rem;
-      padding-top: 4.5rem;
-    }
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
+    <meta charset="utf-8">
+    <title>TensorFlow.js: Tuberculosis Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Use the power of Machine Learning to diagnose TB from chest x-rays.">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            min-height: 75rem;
+            padding-top: 4.5rem;
+        }
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="/index.html">Upload image</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
-      </li>
-  </div>
+    <a class="navbar-brand" href="/index.html">Upload image</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+    </div>
 </nav>
 
 <main role="main" class="container mt-5">
-  <div class="row">
-    <div class="col-12">
-      <div class="progress progress-bar progress-bar-striped progress-bar-animated mb-2">Loading Model</div>
+    <div class="row">
+        <div class="col-12">
+            <div class="progress progress-bar progress-bar-striped progress-bar-animated mb-2">Loading Model</div>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <form action="/upload-img/upload" method="POST" enctype="multipart/form-data">
-      <div class="col-6">
-        <input id="image-selector" class="form-control border-0" type="file" name="file">
-      </div>
-      <div class="col-6">
-        <button id="predict-button" class="btn btn-primary float-right">Predict</button>
-      </div>
-    </form>
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-6">
-      <h2 class="ml-3">Image</h2>
-      <img id="selected-image" class="ml-3" width="250" height="250">
+    <div class="row">
+        <form action="/upload-img/upload" method="POST" enctype="multipart/form-data">
+            <div class="col-6">
+                <input id="image-selector" class="form-control border-0" type="file" name="file">
+            </div>
+            <div class="col-6">
+                <button id="predict-button" class="btn btn-primary float-right">Predict</button>
+            </div>
+        </form>
     </div>
-    <div class="col-6">
-      <h2 class="ml-3">Predictions</h2>
-      <ol id="prediction-list"></ol>
+    <hr>
+    <div class="row">
+        <div class="col-6">
+            <h2 class="ml-3">Image</h2>
+            <img id="selected-image" class="ml-3" width="250" height="250">
+        </div>
+        <div class="col-6">
+            <h2 class="ml-3">Predictions</h2>
+            <ol id="prediction-list"></ol>
+        </div>
     </div>
-  </div>
+    <script src="http://127.0.0.1:3000/sketch.js"></script>
 </main>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
+<script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
 <script>
 
 
+    const imgSelected = new URLSearchParams(window.location.search).get('selected');
+    if (imgSelected) {
+        $("#selected-image").attr("src", `../../${imgSelected}`);
+    }
 
 
-  const imgSelected = new URLSearchParams(window.location.search).get('selected');
-  if (imgSelected) {
-    $("#selected-image").attr("src", `../../${imgSelected}`);
-  }
-
-
-  $("#image-selector").change(function () {
-  imageLoaded = false;
-  let reader = new FileReader();
-  reader.onload = function () {
-    let dataURL = reader.result;
-    $("#selected-image").attr("src", dataURL);
-    $("#prediction-list").empty();
-    imageLoaded = true;
-
-
-      function preload() {
-          img = document.getElementById('selected-image');
-          detector = ml5.objectDetector('cocossd');
-      }
-
-      function setup() {
-          //createCanvas(640, 480);
-          //image(img, 0, 0);
-          detector.detect(img, gotDetections);
-      }
-      preload();
-      setup();
-  };
-  let file = $("#image-selector").prop('files')[0];
-  reader.readAsDataURL(file);
-});
-
-
-
-  let img;
-  let detector;
-
-
-
-  function gotDetections(error, results) {
-      document.getElementById('prediction-list').innerText = `
-            Prediction: ${results[0].label}\n
-            Probabilité: ${results[0].confidence}\n
-          `;
-      for (let i = 0; i < results.length; i++) {
-          let object = results[i];
-          console.log(object);
-          stroke(0, 255, 0);
-          strokeWeight(4);
-          noFill();
-          rect(object.x, object.y, object.width, object.height);
-          noStroke();
-          fill(255);
-          textSize(24);
-          text(object.label, object.x + 10, object.y + 24);
-      }
-  }
+    $("#image-selector").change(function () {
+        imageLoaded = false;
+        let reader = new FileReader();
+        reader.onload = function () {
+            let dataURL = reader.result;
+            $("#selected-image").attr("src", dataURL);
+            $("#prediction-list").empty();
+            imageLoaded = true;
+        };
+        let file = $("#image-selector").prop('files')[0];
+        reader.readAsDataURL(file);
+    });
 
 
 
 
 </script>
+
 </body>
 </html>
