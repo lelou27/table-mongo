@@ -126,6 +126,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
 <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
 <script>
     const imgSelected = new URLSearchParams(window.location.search).get('selected');
     const searchParams = new URLSearchParams(window.location.search);
@@ -145,6 +148,24 @@
         };
         let file = $("#image-selector").prop('files')[0];
         reader.readAsDataURL(file);
+
+      const img = document.getElementById('selected-image');
+
+      // Load the model.
+      mobilenet.load().then(model => {
+        // Classify the image.
+        model.classify(img).then(predictions => {
+          let resultat = 'MobileNet : ';
+          predictions.forEach((result) => {
+              (resultat += `
+              Prediction: ${result.className}\n
+              Probabilité: ${parseInt(result.probability * 100)} %\n
+            `)
+          }
+        );
+          document.getElementById('prediction-list').innerText = resultat;
+        });
+      });
     });
 
 

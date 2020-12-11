@@ -19,7 +19,6 @@ function preload() {
   if (searchParams.get('selected') != null) {
     img = loadImage('http://127.0.0.1:3000/' + searchParams.get('selected'));
     document.getElementById('progress-bar').style.display = 'flex';
-
   }
   detector = ml5.objectDetector('cocossd');
 }
@@ -37,11 +36,14 @@ function gotDetections(error, results) {
     predictions: resultsToSend,
   });
 
-  let resultat ="";
-  results.forEach(result => resultat += `
+  let resultat = '';
+  results.forEach(
+    (result) =>
+      (resultat += `
             Prediction: ${result.label}\n
             Probabilité: ${result.confidence}\n
-          `)
+          `),
+  );
   document.getElementById('prediction-list').innerText = resultat;
   document.getElementById('progress-bar').style.display = 'none';
 
